@@ -27,10 +27,7 @@ export default class MetadataIcon extends Plugin {
 		this.addSettingTab(new MetadataHiderSettingTab(this.app, this));
 	}
 
-	onunload() {
-
-	}
-
+	onunload() { }
 
 	async loadSettings() {
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
@@ -40,8 +37,6 @@ export default class MetadataIcon extends Plugin {
 		await this.saveData(this.settings);
 		await genSnippetCSS(this);
 	}
-
-
 }
 
 function genEntryCSS(s: IconAttrSetting): string {
@@ -82,21 +77,9 @@ async function genSnippetCSS(plugin: MetadataIcon) {
 	})
 
 	const vault = plugin.app.vault;
-	const ob_config_path = vault.configDir;
-	const snippets_path = ob_config_path + "/snippets";
-	const css_filename = "metadata-icon-auto-gen"
-	const path = `${snippets_path}/${css_filename}.css`;
-	if (!(await vault.adapter.exists(snippets_path))) { await vault.adapter.mkdir(snippets_path); }
+	const path = `${plugin.manifest.dir}/styles.css`;
 	if (await vault.adapter.exists(path)) { await vault.adapter.remove(path) }
 	await plugin.app.vault.create(path, content.join('\n'));
-
-	// Activate snippet
-	if (plugin.settings.enableSnippet) {
-		// @ts-ignore
-		const customCss = plugin.app.customCss;
-		customCss.enabledSnippets.add(css_filename);
-		customCss.requestLoadSnippets();
-	}
 
 	// Ensure Style Settings reads changes
 	plugin.app.workspace.trigger("parse-style-settings");
@@ -123,18 +106,6 @@ class MetadataHiderSettingTab extends PluginSettingTab {
 
 		containerEl.empty();
 
-		new Setting(containerEl)
-			.setName('Enable snippet')
-			.setDesc('')
-			.addToggle((toggle) => {
-				toggle
-					.setValue(this.plugin.settings.enableSnippet)
-					.onChange(async (value) => {
-						this.plugin.settings.enableSnippet = value;
-						await this.plugin.saveSettings();
-						await genSnippetCSS(this.plugin);
-					});
-			});
 
 		new Setting(containerEl)
 			.setName("Add custom entry icon")
