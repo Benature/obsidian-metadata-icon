@@ -6,16 +6,10 @@ export interface IconAttrSetting {
 }
 
 interface MetadataIconSettings {
-	enableSnippet: boolean;
-	propertiesVisible: string;
-	propertiesInvisible: string;
 	IconAttrList: Array<IconAttrSetting>;
 }
 
 const DEFAULT_SETTINGS: MetadataIconSettings = {
-	enableSnippet: true,
-	propertiesVisible: "",
-	propertiesInvisible: "",
 	IconAttrList: [],
 }
 
@@ -115,7 +109,7 @@ class MetadataHiderSettingTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName("Add custom entry icon")
-			.setDesc("Input entry name and icon url.")
+			.setDesc("Input entry name and icon url. The image will be loaded on the left side. If there is no image shown on the left side, please check the image url.")
 			.addButton((button: ButtonComponent) => {
 				button.setTooltip("Add new request")
 					.setButtonText("+")
@@ -166,6 +160,7 @@ class MetadataHiderSettingTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName("Force Refresh CSS")
+			.setDesc(`Note: The "icon preview" in the setting tab is automatically loaded, which is not related to this button.`)
 			.addButton((button: ButtonComponent) => {
 				button.setTooltip("Add new request")
 					.setButtonText("Refresh")
