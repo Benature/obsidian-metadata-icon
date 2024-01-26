@@ -31,3 +31,6 @@ This plugin is in the progress of plugin community release.
 - `npm i`  install dependencies
 - `npm run dev` to start compilation in watch mode.
 - `npm run build`  to build production.
+
+## TODO
+- [ ] Support Regex

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.5
+- [updated] Chinese language support for setting tab.
+- [updated] Force icon preview image background-color to be transparent.
+
 ## 0.0.4
 - [updated] add description about setting
 - [updated] format and remove redundant codes

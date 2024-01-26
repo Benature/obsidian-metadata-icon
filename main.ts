@@ -10,7 +10,7 @@ interface MetadataIconSettings {
 }
 
 const DEFAULT_SETTINGS: MetadataIconSettings = {
-	IconAttrList: [],
+	IconAttrList: [{ entry: 'github', image: 'https://icones.pro/wp-content/uploads/2021/06/icone-github-violet.png' }],
 }
 
 export default class MetadataIcon extends Plugin {
@@ -102,16 +102,29 @@ class MetadataHiderSettingTab extends PluginSettingTab {
 		await genSnippetCSS(this.plugin);
 	}
 
+	getLang(): string {
+		let lang = window.localStorage.getItem('language');
+		if (lang == null || ["en", "zh", "zh-TW"].indexOf(lang) == -1) { lang = "en"; }
+		return lang;
+	}
+
+
 	display(): void {
 		const { containerEl } = this;
+
+		const lang = this.getLang();
 
 		containerEl.empty();
 
 		new Setting(containerEl)
-			.setName("Add custom entry icon")
-			.setDesc("Input entry name and icon url. The image will be loaded on the left side. If there is no image shown on the left side, please check the image url.")
+			.setName({ en: "Add custom entry icon", zh: "添加自定义图标", "zh-TW": "新增自定義圖示" }[lang] as string)
+			.setDesc({
+				"en": "Input entry name and icon url. The image will be automatically loaded on the left side. If there is no image shown on the left side, please check the image url or network connection.",
+				"zh": "输入文档属性名称和图标链接。图标将在左侧自动预览，如果左侧没有显示图片，请检查图片链接是否正确或网络连接。如：「豆瓣，https://img1.doubanio.com/favicon.ico」",
+				"zh-TW": "輸入文件屬性名稱和圖示鏈接。圖示將在左側自動預覽，如果左側沒有顯示圖片，請檢查圖片鏈接是否正確或網絡連線。如：「facebook，https://www.facebook.com/favicon.ico」"
+			}[lang] as string)
 			.addButton((button: ButtonComponent) => {
-				button.setTooltip("Add new request")
+				button.setTooltip("Add new icon")
 					.setButtonText("+")
 					.setCta().onClick(async () => {
 						this.plugin.settings.IconAttrList.push({
@@ -125,14 +138,15 @@ class MetadataHiderSettingTab extends PluginSettingTab {
 		this.plugin.settings.IconAttrList.forEach((iconSetting, index) => {
 			const s = new Setting(this.containerEl)
 				.then((setting) => {
-					let span = setting.descEl.createEl("span", { text: "icon preview:" });
+					let span = setting.descEl.createEl("span", { text: { en: "icon preview:", zh: "图标预览:", "zh-TW": "圖示預覽:" }[lang] as string });
 					span.setAttribute("style", `margin-right: 2px; `);
 					let img = setting.descEl.createEl("img", { cls: "metadata-icon-preview" });
 					img.setAttribute("src", iconSetting.image);
 					img.setAttribute("width", `20px`);
+					img.setAttribute("style", `background-color: transparent;`);
 				})
 				.addSearch((cb) => {
-					cb.setPlaceholder("entry name")
+					cb.setPlaceholder({ en: "entry name", zh: "文档属性名称", "zh-TW": "文件屬性名稱", }[lang] as string)
 						.setValue(iconSetting.entry)
 						.onChange(async (newValue) => {
 							this.plugin.settings.IconAttrList[index].entry = newValue;
@@ -140,11 +154,12 @@ class MetadataHiderSettingTab extends PluginSettingTab {
 						});
 				})
 				.addSearch((cb) => {
-					cb.setPlaceholder("image url")
+					cb.setPlaceholder({ en: "image url", zh: "图标链接", "zh-TW": "圖示鏈接", }[lang] as string)
 						.setValue(iconSetting.image)
 						.onChange(async (newValue) => {
 							this.plugin.settings.IconAttrList[index].image = newValue;
 							await this.plugin.saveSettings();
+							this.display();
 						});
 				})
 				.addExtraButton((cb) => {
@@ -159,11 +174,15 @@ class MetadataHiderSettingTab extends PluginSettingTab {
 		});
 
 		new Setting(containerEl)
-			.setName("Force Refresh CSS")
-			.setDesc(`Note: The "icon preview" in the setting tab is automatically loaded, which is not related to this button.`)
+			.setName({ en: "Force Refresh CSS", zh: "强制刷新插件CSS样式", "zh-TW": "強制刷新插件CSS樣式" }[lang] as string)
+			.setDesc({
+				en: `Note: The "icon preview" in the setting tab is automatically loaded, which is not related to this button.`,
+				zh: `注意：设置选项卡中的“图标预览”是自动加载的，与此按钮无关。`,
+				"zh-TW": `注意：設定選單中的「圖示預覽」是自動載入的，與此按鈕無關。`
+			}[lang] as string)
 			.addButton((button: ButtonComponent) => {
-				button.setTooltip("Add new request")
-					.setButtonText("Refresh")
+				button
+					.setButtonText({ en: "Refresh", zh: "刷新", "zh-TW": "刷新" }[lang] as string)
 					.setCta().onClick(async () => {
 						// @ts-ignore
 						const plugins = this.plugin.app.plugins;
