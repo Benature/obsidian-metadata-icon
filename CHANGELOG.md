@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.0.6
+- [fix] bug: focus quit every time when input text is changed (`this.display()` issue)
+
 ## 0.0.5
 - [updated] Chinese language support for setting tab.
 - [updated] Force icon preview image background-color to be transparent.

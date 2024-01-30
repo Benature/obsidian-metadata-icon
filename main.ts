@@ -120,8 +120,8 @@ class MetadataHiderSettingTab extends PluginSettingTab {
 			.setName({ en: "Add custom entry icon", zh: "添加自定义图标", "zh-TW": "新增自定義圖示" }[lang] as string)
 			.setDesc({
 				"en": "Input entry name and icon url. The image will be automatically loaded on the left side. If there is no image shown on the left side, please check the image url or network connection.",
-				"zh": "输入文档属性名称和图标链接。图标将在左侧自动预览，如果左侧没有显示图片，请检查图片链接是否正确或网络连接。如：「豆瓣，https://img1.doubanio.com/favicon.ico」",
-				"zh-TW": "輸入文件屬性名稱和圖示鏈接。圖示將在左側自動預覽，如果左側沒有顯示圖片，請檢查圖片鏈接是否正確或網絡連線。如：「facebook，https://www.facebook.com/favicon.ico」"
+				"zh": "输入文档属性名称和图标链接。图标将在左侧自动预览，如果左侧没有显示图片，请检查图片链接是否正确或网络连接。输入示例：「豆瓣，https://img1.doubanio.com/favicon.ico」",
+				"zh-TW": "輸入文件屬性名稱和圖示鏈接。圖示將在左側自動預覽，如果左側沒有顯示圖片，請檢查圖片鏈接是否正確或網絡連線。輸入範例：「facebook，https://www.facebook.com/favicon.ico」"
 			}[lang] as string)
 			.addButton((button: ButtonComponent) => {
 				button.setTooltip("Add new icon")
@@ -136,41 +136,39 @@ class MetadataHiderSettingTab extends PluginSettingTab {
 					});
 			})
 		this.plugin.settings.IconAttrList.forEach((iconSetting, index) => {
-			const s = new Setting(this.containerEl)
-				.then((setting) => {
-					let span = setting.descEl.createEl("span", { text: { en: "icon preview:", zh: "图标预览:", "zh-TW": "圖示預覽:" }[lang] as string });
-					span.setAttribute("style", `margin-right: 2px; `);
-					let img = setting.descEl.createEl("img", { cls: "metadata-icon-preview" });
-					img.setAttribute("src", iconSetting.image);
-					img.setAttribute("width", `20px`);
-					img.setAttribute("style", `background-color: transparent;`);
-				})
-				.addSearch((cb) => {
-					cb.setPlaceholder({ en: "entry name", zh: "文档属性名称", "zh-TW": "文件屬性名稱", }[lang] as string)
-						.setValue(iconSetting.entry)
-						.onChange(async (newValue) => {
-							this.plugin.settings.IconAttrList[index].entry = newValue;
-							await this.plugin.saveSettings();
-						});
-				})
-				.addSearch((cb) => {
-					cb.setPlaceholder({ en: "image url", zh: "图标链接", "zh-TW": "圖示鏈接", }[lang] as string)
-						.setValue(iconSetting.image)
-						.onChange(async (newValue) => {
-							this.plugin.settings.IconAttrList[index].image = newValue;
-							await this.plugin.saveSettings();
-							this.display();
-						});
-				})
-				.addExtraButton((cb) => {
-					cb.setIcon("cross")
-						.setTooltip("Delete")
-						.onClick(async () => {
-							this.plugin.settings.IconAttrList.splice(index, 1);
-							await this.plugin.saveSettings();
-							this.display();
-						});
-				});
+			const s = new Setting(this.containerEl);
+			let span = s.descEl.createEl("span", { text: { en: "icon preview:", zh: "图标预览:", "zh-TW": "圖示預覽:" }[lang] as string });
+			span.setAttribute("style", `margin-right: 2px; `);
+			let img = s.descEl.createEl("img", { cls: "metadata-icon-preview" });
+			img.setAttribute("src", iconSetting.image);
+			img.setAttribute("width", `20px`);
+			img.setAttribute("style", `background-color: transparent;`);
+			s.addSearch((cb) => {
+				cb.setPlaceholder({ en: "entry name", zh: "文档属性名称", "zh-TW": "文件屬性名稱", }[lang] as string)
+					.setValue(iconSetting.entry)
+					.onChange(async (newValue) => {
+						this.plugin.settings.IconAttrList[index].entry = newValue;
+						await this.plugin.saveSettings();
+					});
+			})
+			s.addSearch((cb) => {
+				cb.setPlaceholder({ en: "image url", zh: "图标链接", "zh-TW": "圖示鏈接", }[lang] as string)
+					.setValue(iconSetting.image)
+					.onChange(async (newValue) => {
+						this.plugin.settings.IconAttrList[index].image = newValue;
+						await this.plugin.saveSettings();
+						img.setAttribute("src", iconSetting.image);
+					});
+			});
+			s.addExtraButton((cb) => {
+				cb.setIcon("cross")
+					.setTooltip("Delete")
+					.onClick(async () => {
+						this.plugin.settings.IconAttrList.splice(index, 1);
+						await this.plugin.saveSettings();
+						this.display();
+					});
+			});
 		});
 
 		new Setting(containerEl)
