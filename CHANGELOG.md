@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.0.7
+- [updated] No longer needing to force refresh css, it's automatically updated.
+
 ## 0.0.6
 - [fix] bug: focus quit every time when input text is changed (`this.display()` issue)
 
