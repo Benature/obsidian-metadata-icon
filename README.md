@@ -8,9 +8,19 @@ Change Metadata Entry Icon
 </center>
 
 
+## TODO
+- [ ] Support Regex
+
+
 ## Install
 
-This plugin is in the progress of plugin community release.
+### Install from plugin community
+
+[click to install](https://obsidian.md/plugins?id=metadata-icon), or:
+
+- Open Obsidian and go to Settings > Community Plugins
+- Search for `Metadata Icon`
+- Click `Install`
 
 ### Install by [BRAT Plugin](https://obsidian.md/plugins?id=obsidian42-brat)
 
@@ -32,8 +42,6 @@ This plugin is in the progress of plugin community release.
 - `npm run dev` to start compilation in watch mode.
 - `npm run build`  to build production.
 
-## TODO
-- [ ] Support Regex
 
 ## Support
 

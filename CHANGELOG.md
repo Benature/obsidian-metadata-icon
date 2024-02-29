@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.0.8
+- [updated] i18n support
+
 ## 0.0.7
 - [updated] No longer needing to force refresh css, it's automatically updated.
 
