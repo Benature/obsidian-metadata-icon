@@ -6,12 +6,20 @@ export interface IconAttrSetting {
 	image: string;
 }
 
+export interface cssAfterConfiguration {
+	top: string;
+	left: string;
+	opacity: number;
+}
+
 interface MetadataIconSettings {
 	IconAttrList: Array<IconAttrSetting>;
+	cssAfterConfig: cssAfterConfiguration;
 }
 
 const DEFAULT_SETTINGS: MetadataIconSettings = {
 	IconAttrList: [],
+	cssAfterConfig: { top: "6px", left: "3px", opacity: 0.5 }
 }
 
 export default class MetadataIcon extends Plugin {
@@ -34,8 +42,9 @@ export default class MetadataIcon extends Plugin {
 	}
 }
 
-function genEntryCSS(s: IconAttrSetting): string {
+function genEntryCSS(s: IconAttrSetting, c: cssAfterConfiguration): string {
 	const selector = `data-property-key="${s.entry}"`;
+
 	let body: string[] = [
 		`.metadata-property[${selector}] .metadata-property-key::after {`,
 		`	content: "";`,
@@ -44,10 +53,10 @@ function genEntryCSS(s: IconAttrSetting): string {
 		`	width: 20px;`,
 		`	height: 20px;`,
 		`	position: absolute;`,
-		`	left: 3px;`,
-		`	top: 6px;`,
+		`	left: ${c.left};`,
+		`	top: ${c.top};`,
 		`	z-index: -100;`,
-		`	opacity: 0.5;`,
+		`	opacity: ${c.opacity};`,
 		`	background-repeat: no-repeat;`,
 		`}`,
 		`.metadata-property[${selector}] svg {`,
@@ -74,7 +83,7 @@ async function genSnippetCSS(plugin: MetadataIcon) {
 	];
 
 	plugin.settings.IconAttrList.forEach((iconSetting, index) => {
-		content.push(genEntryCSS(iconSetting));
+		content.push(genEntryCSS(iconSetting, plugin.settings.cssAfterConfig));
 	})
 
 
@@ -137,7 +146,7 @@ class MetadataHiderSettingTab extends PluginSettingTab {
 			img.setAttribute("src", iconSetting.image);
 			img.setAttribute("width", `20px`);
 			img.setAttribute("style", `background-color: transparent;`);
-			s.addSearch((cb) => {
+			s.addText((cb) => {
 				cb.setPlaceholder(t.settingAddIconPlaceholderEntry)
 					.setValue(iconSetting.entry)
 					.onChange(async (newValue) => {
@@ -146,7 +155,7 @@ class MetadataHiderSettingTab extends PluginSettingTab {
 						this.debouncedGenerate();
 					});
 			})
-			s.addSearch((cb) => {
+			s.addText((cb) => {
 				cb.setPlaceholder(t.settingAddIconPlaceholderImage)
 					.setValue(iconSetting.image)
 					.onChange(async (newValue) => {
@@ -167,5 +176,52 @@ class MetadataHiderSettingTab extends PluginSettingTab {
 					});
 			});
 		});
+
+		containerEl.createEl("h3", { text: "Advanced" });
+
+		new Setting(containerEl)
+			.setName("top offset")
+			.setDesc("")
+			.addText((cb) => {
+				cb.setPlaceholder(t.settingAddIconPlaceholderImage)
+					.setValue(this.plugin.settings.cssAfterConfig.top)
+					.onChange(async (newValue) => {
+						this.plugin.settings.cssAfterConfig.top = newValue;
+						await this.plugin.saveSettings();
+						this.debouncedGenerate();
+					});
+			})
+		new Setting(containerEl)
+			.setName("left offset")
+			.setDesc("")
+			.addText((cb) => {
+				cb.setPlaceholder(t.settingAddIconPlaceholderImage)
+					.setValue(this.plugin.settings.cssAfterConfig.left)
+					.onChange(async (newValue) => {
+						this.plugin.settings.cssAfterConfig.left = newValue;
+						await this.plugin.saveSettings();
+						this.debouncedGenerate();
+					});
+			})
+		new Setting(containerEl)
+			.setName("opacity")
+			.setDesc("")
+			.addText((cb) => {
+				cb.setPlaceholder(t.settingAddIconPlaceholderImage)
+					.setValue(this.plugin.settings.cssAfterConfig.opacity.toString())
+					.onChange(async (newValue) => {
+						try {
+							let v = parseFloat(newValue);
+							if (v < 0 || v > 1) {
+								throw new Error();
+							}
+							this.plugin.settings.cssAfterConfig.opacity = v;
+							await this.plugin.saveSettings();
+							this.debouncedGenerate();
+						} catch (e) {
+							new Notice("Invalid opacity value, please enter a number between 0 and 1");
+						}
+					});
+			})
 	}
 }

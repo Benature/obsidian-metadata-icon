@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.0.9
+- [feature] custom css: `top`, `left`, `opacity`
+
 ## 0.0.8
 - [updated] i18n support
 
