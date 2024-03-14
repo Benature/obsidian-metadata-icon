@@ -177,7 +177,7 @@ class MetadataHiderSettingTab extends PluginSettingTab {
 				cb.setPlaceholder(t.settingAddIconPlaceholderImage)
 					.setValue(iconSetting.image)
 					.onChange(async (newValue) => {
-						img.setAttribute("src", newValue);
+						img.setAttribute("src", this.plugin.getResourcePath(newValue));
 						this.plugin.settings.IconAttrList[index].image = newValue;
 						await this.plugin.saveSettings();
 						this.debouncedGenerate();
