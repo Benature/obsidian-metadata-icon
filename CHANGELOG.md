@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.10
+
+- [feature] support local image file: relative to Obsidian vault or absolute path.
+
 ## 0.0.9
 - [feature] custom css: `top`, `left`, `opacity`
 
