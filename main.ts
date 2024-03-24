@@ -46,7 +46,7 @@ export default class MetadataIcon extends Plugin {
 	}
 
 	getResourcePath(path: string): string {
-		if (/https?:\/\//.test(path)) {
+		if (/^(https?:\/\/|data:)/.test(path)) {
 			return path;
 		}
 		const adapter = this.app.vault.adapter;
