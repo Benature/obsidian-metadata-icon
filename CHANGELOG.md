@@ -1,7 +1,9 @@
 # Changelog
 
-## 0.0.10
+## 0.0.11
+- PR [#3](https://github.com/Benature/obsidian-metadata-icon/pull/3)
 
+## 0.0.10
 - [feature] support local image file: relative to Obsidian vault or absolute path.
 
 ## 0.0.9
