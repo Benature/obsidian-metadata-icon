@@ -22,6 +22,8 @@ const DEFAULT_SETTINGS: MetadataIconSettings = {
 	cssAfterConfig: { top: "6px", left: "3px", opacity: 0.5 }
 }
 
+const EMPTY_PNG_DATA_URL = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+
 export default class MetadataIcon extends Plugin {
 	settings: MetadataIconSettings;
 	resourceBase: string;
@@ -160,7 +162,7 @@ class MetadataHiderSettingTab extends PluginSettingTab {
 			let span = s.descEl.createEl("span", { text: t.settingAddIconDescElSpan });
 			span.setAttribute("style", `margin-right: 2px; `);
 			let img = s.descEl.createEl("img", { cls: "metadata-icon-preview" });
-			img.setAttribute("src", this.plugin.getResourcePath(iconSetting.image));
+			img.setAttribute("src", this.plugin.getResourcePath(iconSetting.image.trim() || EMPTY_PNG_DATA_URL));
 
 			img.setAttribute("width", `20px`);
 			img.setAttribute("style", `background-color: transparent;`);
