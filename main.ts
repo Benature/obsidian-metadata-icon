@@ -164,6 +164,7 @@ class MetadataHiderSettingTab extends PluginSettingTab {
 			let img = s.descEl.createEl("img", { cls: "metadata-icon-preview" });
 			img.setAttribute("src", this.plugin.getResourcePath(iconSetting.image.trim() || EMPTY_PNG_DATA_URL));
 
+
 			img.setAttribute("width", `20px`);
 			img.setAttribute("style", `background-color: transparent;`);
 			s.addText((cb) => {
@@ -179,7 +180,7 @@ class MetadataHiderSettingTab extends PluginSettingTab {
 				cb.setPlaceholder(t.settingAddIconPlaceholderImage)
 					.setValue(iconSetting.image)
 					.onChange(async (newValue) => {
-						img.setAttribute("src", this.plugin.getResourcePath(newValue));
+						img.setAttribute("src", this.plugin.getResourcePath(newValue || EMPTY_PNG_DATA_URL));
 						this.plugin.settings.IconAttrList[index].image = newValue;
 						await this.plugin.saveSettings();
 						this.debouncedGenerate();
