@@ -2,6 +2,8 @@
 
 ## dev
 <!-- ## 0.0.12 -->
+
+## 0.0.12
 - PR [#4](https://github.com/Benature/obsidian-metadata-icon/pull/4)
 
 ## 0.0.11
