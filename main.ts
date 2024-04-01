@@ -1,5 +1,6 @@
 import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, ButtonComponent, Setting, debounce } from 'obsidian';
 import { Locals } from "./src/i18n/i18n";
+import { addDonationElement } from 'src/settings/donation';
 
 export interface IconAttrSetting {
 	entry: string;
@@ -244,5 +245,12 @@ class MetadataHiderSettingTab extends PluginSettingTab {
 						}
 					});
 			})
+
+		const pluginDescEl = containerEl.createEl("div");
+		pluginDescEl.setAttribute("style", "color: gray; font-size: 12px; margin-top: 30px;");
+		pluginDescEl.innerHTML = t.settings.readmeHTML;
+
+
+		addDonationElement(containerEl);
 	}
 }
