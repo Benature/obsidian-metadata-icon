@@ -3,6 +3,9 @@
 ## dev
 <!-- ## 0.0.12 -->
 
+## 0.0.13
+- [updated] In settings, after clicking add button, new entry will be added at the first, rather than at the last. It is more convenient for users to see the new entry when there are many entries already.
+
 ## 0.0.12
 - PR [#4](https://github.com/Benature/obsidian-metadata-icon/pull/4)
 

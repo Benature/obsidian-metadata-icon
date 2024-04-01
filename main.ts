@@ -149,7 +149,7 @@ class MetadataHiderSettingTab extends PluginSettingTab {
 				button.setTooltip("Add new icon")
 					.setButtonText("+")
 					.setCta().onClick(async () => {
-						this.plugin.settings.IconAttrList.push({
+						this.plugin.settings.IconAttrList.unshift({
 							entry: "",
 							image: "",
 						});
