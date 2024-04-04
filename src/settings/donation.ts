@@ -54,17 +54,6 @@ function addDonationElementContent(containerEl: HTMLElement, text: string[]): vo
 	donateELdiv.appendChild(donateELa2);
 }
 
-const conationEn = `<div>
-If you find this plugin useful and would like to support its development, 
-you can sponsor me via
-<a href="https://www.buymeacoffee.com/benature">☕️ Buy Me a Coffee</a>,
-<a href="https://afdian.net/a/Benature-K">⚡️ AiFaDian</a>,
-<a >WeChat or Alipay</a>.
-Any amount is welcome, thank you!
-</div>`;
-
-
-
 const buyMeACoffee = `
 <svg width="150" height="42" viewBox="0 0 260 73" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M0 11.68C0 5.22932 5.22931 0 11.68 0H248.2C254.651 0 259.88 5.22931 259.88 11.68V61.32C259.88 67.7707 254.651 73 248.2 73H11.68C5.22931 73 0 67.7707 0 61.32V11.68Z" fill="#FFDD00"/>

@@ -70,7 +70,7 @@ export class Locals {
 
 	static get(): LocalProperty {
 		const lang = window.localStorage.getItem("language");
-		switch (lang) {
+		switch (lang?.toLowerCase()) {
 			case "zh":
 				return ZH;
 			case "zh-tw":

@@ -2,6 +2,7 @@ import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, But
 import { Locals } from "./src/i18n/i18n";
 import { addDonationElement } from 'src/settings/donation';
 
+const css_filename = "metadata-icon-auto-gen"
 export interface IconAttrSetting {
 	entry: string;
 	image: string;
@@ -38,7 +39,12 @@ export default class MetadataIcon extends Plugin {
 		await this.genSnippetCSS(this);
 	}
 
-	onunload() { }
+	onunload() {
+		// @ts-ignore
+		const customCss = plugin.app.customCss;
+		customCss.enabledSnippets.remove(css_filename);
+		customCss.requestLoadSnippets();
+	}
 
 	async loadSettings() {
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
@@ -109,7 +115,7 @@ export default class MetadataIcon extends Plugin {
 		const vault = plugin.app.vault;
 		const ob_config_path = vault.configDir;
 		const snippets_path = ob_config_path + "/snippets";
-		const css_filename = "metadata-icon-auto-gen"
+
 		const path = `${snippets_path}/${css_filename}.css`;
 		if (!(await vault.adapter.exists(snippets_path))) { await vault.adapter.mkdir(snippets_path); }
 		if (await vault.adapter.exists(path)) { await vault.adapter.remove(path) }
