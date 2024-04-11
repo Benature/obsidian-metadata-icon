@@ -3,6 +3,7 @@
 <div style="text-align:center">
 
 ![Obsidian Downloads](https://img.shields.io/badge/dynamic/json?logo=obsidian&color=%23483699&label=downloads&query=%24%5B%22metadata-icon%22%5D.downloads&url=https%3A%2F%2Fraw.githubusercontent.com%2Fobsidianmd%2Fobsidian-releases%2Fmaster%2Fcommunity-plugin-stats.json) ![GitHub stars](https://img.shields.io/github/stars/Benature/obsidian-metadata-icon?style=flat) ![latest download](https://img.shields.io/github/downloads/Benature/obsidian-metadata-icon/latest/total?style=plastic)
+[![Github release](https://img.shields.io/github/manifest-json/v/Benature/obsidian-metadata-icon?color=blue)](https://github.com/Benature/obsidian-metadata-icon/releases/latest) ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/Benature/obsidian-metadata-icon?include_prereleases&label=BRAT%20beta)
 
 [click to install](https://obsidian.md/plugins?id=metadata-icon)
 
@@ -30,8 +31,8 @@ Links support online URLs, local file paths, and base64-encoded images.
 "本地文件：可以是相对 Obsidian 库的文件路径，或者相对电脑根目录的文件路径。如 `.obsidian/svg/木一.svg`、`D:/图片/木一.png`",
 "base64编码图片：需以 `data:` 开头。" -->
 
-> Chinese simple introduction: [小红书](http://xhslink.com/Uix9iF)、[公众号](https://mp.weixin.qq.com/s/F2ixCiDU-yP6PKAyOcDhjw) 
-> 如有汉化需要请联系作者
+> Chinese simple introduction: [公众号](https://mp.weixin.qq.com/s/F2ixCiDU-yP6PKAyOcDhjw) / [小红书](http://xhslink.com/Uix9iF) 
+> 如有汉化需要请联系`木一Benature` 
 
 ## Support
 

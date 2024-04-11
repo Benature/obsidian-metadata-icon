@@ -1,4 +1,4 @@
-import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, ButtonComponent, Setting, debounce } from 'obsidian';
+import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, ButtonComponent, Setting, debounce, normalizePath } from 'obsidian';
 import { Locals } from "./src/i18n/i18n";
 import { addDonationElement } from 'src/settings/donation';
 
@@ -60,8 +60,10 @@ export default class MetadataIcon extends Plugin {
 		}
 		const adapter = this.app.vault.adapter;
 
-		if (path.startsWith("/")) {
+		if (path.startsWith("/") ) {
 			return this.resourceBase + path;
+		} else if (/^[C-Z]:[\/\\]/.test(path)) { 
+			return normalizePath(this.resourceBase + "/" + path.replace(/\\/g, "/"));
 		} else {
 			return adapter.getResourcePath(path);
 		}
@@ -84,7 +86,7 @@ export default class MetadataIcon extends Plugin {
 			`	opacity: ${c.opacity};`,
 			`	background-repeat: no-repeat;`,
 			`}`,
-			`.metadata-property[${selector}] svg {`,
+			`.metadata-property[${selector}] .metadata-property-icon svg {`,
 			`	visibility: hidden;`,
 			`}`,
 			``,
