@@ -3,6 +3,16 @@
 ## dev
 <!-- ## 0.0.12 -->
 
+## 0.0.16
+- [fix] onunload error
+
+## 0.0.15
+- [fix] #5
+- disable snippet when onunload
+
+## 0.0.14
+- [updated] i18n refactoring, add support html elements
+
 ## 0.0.13
 - [updated] In settings, after clicking add button, new entry will be added at the first, rather than at the last. It is more convenient for users to see the new entry when there are many entries already.
 

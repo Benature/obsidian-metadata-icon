@@ -41,8 +41,8 @@ export default class MetadataIcon extends Plugin {
 
 	onunload() {
 		// @ts-ignore
-		const customCss = plugin.app.customCss;
-		customCss.enabledSnippets.remove(css_filename);
+		const customCss = this.app.customCss;
+		customCss.enabledSnippets.delete(css_filename);
 		customCss.requestLoadSnippets();
 	}
 
