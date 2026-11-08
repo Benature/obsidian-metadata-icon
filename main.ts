@@ -1,4 +1,4 @@
-import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, ButtonComponent, Setting, debounce, normalizePath } from 'obsidian';
+import { App, Notice, Plugin, PluginSettingTab, ButtonComponent, Setting, SettingDefinitionItem, debounce, normalizePath } from 'obsidian';
 import { Locals } from "./src/i18n/i18n";
 import { addDonationElement } from 'src/settings/donation';
 
@@ -30,10 +30,13 @@ export default class MetadataIcon extends Plugin {
 	settings: MetadataIconSettings;
 	resourceBase: string;
 
-	async onload() {
-		let resourcePath = this.app.vault.adapter.getResourcePath("");
+	onload(): void {
+		const resourcePath = this.app.vault.adapter.getResourcePath("");
 		this.resourceBase = resourcePath.match(/(app:\/\/\w*?)\//)?.[1] as string;
+		void this.initialize();
+	}
 
+	private async initialize(): Promise<void> {
 		await this.loadSettings();
 		this.addSettingTab(new MetadataHiderSettingTab(this.app, this));
 		await this.genSnippetCSS(this);
@@ -62,7 +65,7 @@ export default class MetadataIcon extends Plugin {
 
 		if (path.startsWith("/") ) {
 			return this.resourceBase + path;
-		} else if (/^[C-Z]:[\/\\]/.test(path)) { 
+		} else if (/^[C-Z]:[/\\]/.test(path)) {
 			return normalizePath(this.resourceBase + "/" + path.replace(/\\/g, "/"));
 		} else {
 			return adapter.getResourcePath(path);
@@ -72,7 +75,7 @@ export default class MetadataIcon extends Plugin {
 	genEntryCSS(s: IconAttrSetting, c: cssAfterConfiguration): string {
 		const selector = `data-property-key="${s.entry}"`;
 		const url = this.getResourcePath(s.image);
-		let body: string[] = [
+		const body: string[] = [
 			`.metadata-property[${selector}] .metadata-property-key::after {`,
 			`	content: "";`,
 			`	background-image: url("${url}");`,
@@ -109,7 +112,7 @@ export default class MetadataIcon extends Plugin {
 			"",
 		];
 
-		plugin.settings.IconAttrList.forEach((iconSetting, index) => {
+		plugin.settings.IconAttrList.forEach((iconSetting) => {
 			content.push(this.genEntryCSS(iconSetting, plugin.settings.cssAfterConfig));
 		})
 
@@ -133,20 +136,24 @@ export default class MetadataIcon extends Plugin {
 
 class MetadataHiderSettingTab extends PluginSettingTab {
 	plugin: MetadataIcon;
-	debouncedGenerate: Function;
+	debouncedGenerate: () => void;
 
 	constructor(app: App, plugin: MetadataIcon) {
 		super(app, plugin);
 		this.plugin = plugin;
-		this.debouncedGenerate = debounce(this.generateSnippet, 1000, true);
+		this.debouncedGenerate = debounce(() => {
+			void this.plugin.genSnippetCSS(this.plugin);
+		}, 1000, true);
 	}
 
-	async generateSnippet() {
-		await this.plugin.genSnippetCSS(this.plugin);
+	getSettingDefinitions(): SettingDefinitionItem[] {
+		return [{
+			name: "Metadata Icon settings",
+			render: (_setting, group) => this.renderSettings(group.listEl),
+		}];
 	}
 
-	display(): void {
-		const { containerEl } = this;
+	renderSettings(containerEl: HTMLElement): void {
 		const t = Locals.get();
 
 		containerEl.empty();
@@ -163,19 +170,17 @@ class MetadataHiderSettingTab extends PluginSettingTab {
 							image: "",
 						});
 						await this.plugin.saveSettings();
-						this.display();
+						this.update();
 					});
 			})
 		this.plugin.settings.IconAttrList.forEach((iconSetting, index) => {
-			const s = new Setting(this.containerEl);
-			let span = s.descEl.createEl("span", { text: t.settingAddIconDescElSpan });
-			span.setAttribute("style", `margin-right: 2px; `);
-			let img = s.descEl.createEl("img", { cls: "metadata-icon-preview" });
+			const s = new Setting(containerEl);
+			s.descEl.createSpan({ text: t.settingAddIconDescElSpan, cls: "metadata-icon-preview-label" });
+			const img = s.descEl.createEl("img", { cls: "metadata-icon-preview" });
 			img.setAttribute("src", this.plugin.getResourcePath(iconSetting.image.trim() || EMPTY_PNG_DATA_URL));
 
 
-			img.setAttribute("width", `20px`);
-			img.setAttribute("style", `background-color: transparent;`);
+			img.setAttribute("width", "20");
 			s.addText((cb) => {
 				cb.setPlaceholder(t.settingAddIconPlaceholderEntry)
 					.setValue(iconSetting.entry)
@@ -201,13 +206,13 @@ class MetadataHiderSettingTab extends PluginSettingTab {
 					.onClick(async () => {
 						this.plugin.settings.IconAttrList.splice(index, 1);
 						await this.plugin.saveSettings();
-						this.display();
+						this.update();
 						this.debouncedGenerate();
 					});
 			});
 		});
 
-		containerEl.createEl("h3", { text: "Advanced" });
+		new Setting(containerEl).setName("Advanced").setHeading();
 
 		new Setting(containerEl)
 			.setName("top offset")
@@ -241,22 +246,22 @@ class MetadataHiderSettingTab extends PluginSettingTab {
 					.setValue(this.plugin.settings.cssAfterConfig.opacity.toString())
 					.onChange(async (newValue) => {
 						try {
-							let v = parseFloat(newValue);
+							const v = parseFloat(newValue);
 							if (v < 0 || v > 1) {
 								throw new Error();
 							}
 							this.plugin.settings.cssAfterConfig.opacity = v;
 							await this.plugin.saveSettings();
 							this.debouncedGenerate();
-						} catch (e) {
+						} catch {
 							new Notice("Invalid opacity value, please enter a number between 0 and 1");
 						}
 					});
 			})
 
-		const pluginDescEl = containerEl.createEl("div");
-		pluginDescEl.setAttribute("style", "color: gray; font-size: 12px; margin-top: 30px;");
-		pluginDescEl.innerHTML = t.settings.readmeHTML;
+		const pluginDescEl = containerEl.createDiv({ cls: "metadata-icon-usage" });
+		const usageDocument = new DOMParser().parseFromString(t.settings.readmeHTML, "text/html");
+		pluginDescEl.append(...Array.from(usageDocument.body.childNodes));
 
 
 		addDonationElement(containerEl);

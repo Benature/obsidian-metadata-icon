@@ -1,0 +1,41 @@
+.metadata-icon-preview-label {
+	margin-right: 2px;
+}
+
+.metadata-icon-preview {
+	background-color: transparent;
+}
+
+.metadata-icon-usage {
+	color: var(--text-muted);
+	font-size: 12px;
+	margin-top: 30px;
+}
+
+.metadata-icon-donation {
+	border-top: 0.2px solid var(--text-muted);
+	margin-top: 5rem;
+	text-align: center;
+}
+
+.metadata-icon-donation-text {
+	color: var(--text-muted);
+	font-size: 10px;
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+.metadata-icon-donation-center {
+	display: flex;
+	justify-content: center;
+}
+
+.metadata-icon-donation-qr {
+	display: none;
+	margin-bottom: 1rem;
+	width: 300px;
+}
+
+.metadata-icon-donation-qr.is-visible {
+	display: block;
+}

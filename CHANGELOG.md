@@ -1,6 +1,11 @@
 # Changelog
 
 ## dev
+
+## 0.1.0
+- [fix] Resolve all Obsidian community review warnings and remove unsafe innerHTML usage
+- [updated] Adopt the declarative settings API and require Obsidian 1.13.0 or later
+- [chore] Update dependencies and release automation with build provenance
 <!-- ## 0.0.12 -->
 
 ## 0.0.16

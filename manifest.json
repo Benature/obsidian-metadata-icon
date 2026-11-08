@@ -1,14 +1,14 @@
 {
 	"id": "metadata-icon",
 	"name": "Metadata Icon",
-	"version": "0.0.16",
-	"minAppVersion": "0.15.0",
-	"description": "Change metadata entry icon",
+	"version": "0.1.0",
+	"minAppVersion": "1.13.0",
+	"description": "Change metadata entry icons.",
 	"author": "Benature",
 	"authorUrl": "https://github.com/Benature",
 	"fundingUrl": {
 		"Buy Me a Coffee": "https://www.buymeacoffee.com/benature",
-		"爱发电": "https://afdian.net/a/Benature-K",
+		"爱发电": "https://afdian.com/a/Benature-K",
 		"微信/支付宝": "https://s2.loli.net/2024/01/30/jQ9fTSyBxvXRoOM.png"
 	},
 	"isDesktopOnly": false
