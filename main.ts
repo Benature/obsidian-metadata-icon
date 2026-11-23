@@ -134,7 +134,7 @@ export default class MetadataIcon extends Plugin {
 }
 
 
-class MetadataHiderSettingTab extends PluginSettingTab {
+export class MetadataHiderSettingTab extends PluginSettingTab {
 	plugin: MetadataIcon;
 	debouncedGenerate: () => void;
 
@@ -149,7 +149,7 @@ class MetadataHiderSettingTab extends PluginSettingTab {
 	getSettingDefinitions(): SettingDefinitionItem[] {
 		return [{
 			name: "Metadata Icon settings",
-			render: (_setting, group) => this.renderSettings(group.listEl),
+			render: (setting) => this.renderSettings(setting.settingEl),
 		}];
 	}
 
